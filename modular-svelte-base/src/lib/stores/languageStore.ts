@@ -1,37 +1,36 @@
+// src/lib/stores/languageStore.ts
 import { writable } from 'svelte/store';
-import { browser } from '$app/environment';
 
 export type Language = 'ru' | 'en';
 
-const STORAGE_KEY = 'language-preference';
+function createLanguageStore() {
+  const { subscribe, set, update } = writable<Language>('ru');
 
-function getInitialLanguage(): Language {
-	if (!browser) return 'en';
-	
-	const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
-	if (stored && (stored === 'ru' || stored === 'en')) {
-		return stored;
-	}
-	
-	// Try to detect from browser
-	const browserLang = navigator.language.toLowerCase();
-	if (browserLang.startsWith('ru')) {
-		return 'ru';
-	}
-	
-	return 'en';
+  return {
+    subscribe,
+    init: () => {
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('language') as Language | null;
+        const initialLanguage: Language = stored || 'ru';
+        set(initialLanguage);
+      }
+    },
+    toggle: () => {
+      update((current) => {
+        const newLanguage: Language = current === 'ru' ? 'en' : 'ru';
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('language', newLanguage);
+        }
+        return newLanguage;
+      });
+    },
+    set: (language: Language) => {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('language', language);
+      }
+      set(language);
+    }
+  };
 }
 
-const initialLanguage = getInitialLanguage();
-
-export const languageStore = writable<Language>(initialLanguage);
-
-languageStore.subscribe((lang) => {
-	if (browser) {
-		localStorage.setItem(STORAGE_KEY, lang);
-	}
-});
-
-export function toggleLanguage(): void {
-	languageStore.update((current) => (current === 'ru' ? 'en' : 'ru'));
-}
+export const languageStore = createLanguageStore();

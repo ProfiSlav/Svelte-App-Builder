@@ -1,61 +1,72 @@
-export type Language = 'ru' | 'en';
+// src/lib/i18n/translations.ts
+import type { Language } from '$lib/stores/languageStore';
 
 export interface Translation {
-	welcome: {
-		title: string;
-		description: string;
-		goals: {
-			modularity: string;
-			readyToUse: string;
-			mobileOptimized: string;
-			modernStack: string;
-		};
-	};
-	buttons: {
-		toggleTheme: string;
-		toggleLanguage: string;
-		lightTheme: string;
-		darkTheme: string;
-	};
+  welcome: {
+    title: string;
+    description: string;
+    goals: {
+      title: string;
+      items: string[];
+    };
+  };
+  buttons: {
+    toggleTheme: string;
+    toggleLanguage: string;
+  };
+  common: {
+    light: string;
+    dark: string;
+  };
 }
 
-export const translations: Record<Language, Translation> = {
-	en: {
-		welcome: {
-			title: 'Project Name: Modular Svelte Base',
-			description:
-				'This template is designed for quick start of modular Svelte applications.',
-			goals: {
-				modularity: 'Modularity and component reusability',
-				readyToUse: 'Ready-to-use themes and localization',
-				mobileOptimized: 'Optimized for mobile devices',
-				modernStack: 'Integration with modern tech stack'
-			}
-		},
-		buttons: {
-			toggleTheme: 'Toggle Theme',
-			toggleLanguage: 'Switch Language',
-			lightTheme: 'Light',
-			darkTheme: 'Dark'
-		}
-	},
-	ru: {
-		welcome: {
-			title: 'Название проекта: Modular Svelte Base',
-			description:
-				'Этот шаблон создан для быстрого старта модульных Svelte-приложений.',
-			goals: {
-				modularity: 'Модульность и переиспользование компонентов',
-				readyToUse: 'Ready-to-use темы и локализация',
-				mobileOptimized: 'Оптимизирован под мобильные устройства',
-				modernStack: 'Интеграция с современным стеком'
-			}
-		},
-		buttons: {
-			toggleTheme: 'Переключить тему',
-			toggleLanguage: 'Сменить язык',
-			lightTheme: 'Светлая',
-			darkTheme: 'Тёмная'
-		}
-	}
+const translations: Record<Language, Translation> = {
+  ru: {
+    welcome: {
+      title: 'Название проекта: Modular Svelte Base',
+      description: 'Этот шаблон создан для быстрого старта модульных Svelte-приложений.',
+      goals: {
+        title: 'Цели и назначение:',
+        items: [
+          'Модульность и переиспользование компонентов',
+          'Ready-to-use темы и локализация',
+          'Оптимизирован под мобильные устройства',
+          'Интеграция с современным стеком'
+        ]
+      }
+    },
+    buttons: {
+      toggleTheme: 'Переключить тему',
+      toggleLanguage: 'RU / EN'
+    },
+    common: {
+      light: 'Светлая',
+      dark: 'Тёмная'
+    }
+  },
+  en: {
+    welcome: {
+      title: 'Project Name: Modular Svelte Base',
+      description: 'This template is designed for quick start of modular Svelte applications.',
+      goals: {
+        title: 'Goals and Purpose:',
+        items: [
+          'Modularity and component reusability',
+          'Ready-to-use themes and localization',
+          'Optimized for mobile devices',
+          'Integration with modern stack'
+        ]
+      }
+    },
+    buttons: {
+      toggleTheme: 'Toggle Theme',
+      toggleLanguage: 'RU / EN'
+    },
+    common: {
+      light: 'Light',
+      dark: 'Dark'
+    }
+  }
 };
+
+export default translations;
