@@ -1,93 +1,72 @@
 <script lang="ts">
-	import { fade, scale } from 'svelte/transition';
-	import { t } from '$lib/i18n';
-	import ThemeToggle from './ThemeToggle.svelte';
-	import LanguageToggle from './LanguageToggle.svelte';
+  import { fade, slide } from 'svelte/transition';
+  import { t } from '$lib/i18n/i18n';
 
-	const goals = $derived([
-		{ icon: '🧩', key: 'welcome.goals.modularity' },
-		{ icon: '⚡', key: 'welcome.goals.readyToUse' },
-		{ icon: '📱', key: 'welcome.goals.mobileOptimized' },
-		{ icon: '🚀', key: 'welcome.goals.modernStack' }
-	]);
+  const goals = [
+    { icon: '🧩', key: 'welcome.goals.items.0' },
+    { icon: '🎨', key: 'welcome.goals.items.1' },
+    { icon: '📱', key: 'welcome.goals.items.2' },
+    { icon: '⚡', key: 'welcome.goals.items.3' }
+  ];
 </script>
 
 <div
-	class="
-		w-full max-w-4xl mx-auto
-		p-6 sm:p-8 md:p-10
-		rounded-3xl
-		bg-white/60 dark:bg-gray-900/60
-		backdrop-blur-xl
-		border border-white/40 dark:border-gray-700/40
-		shadow-2xl
-		hover:shadow-primary-500/20 dark:hover:shadow-primary-500/10
-		transition-all duration-500
-	"
-	in:scale={{ duration: 400, easing: (t) => t * t }}
-	in:fade={{ duration: 300 }}
+  in:fade={{ duration: 400 }}
+  class="w-full max-w-2xl mx-auto p-6 md:p-8 rounded-3xl
+    bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl
+    border border-white/20 dark:border-gray-700/50
+    shadow-2xl shadow-blue-500/10 dark:shadow-purple-500/10"
 >
-	<!-- Header -->
-	<header class="mb-8 text-center">
-		<h1
-			class="
-				text-2xl sm:text-3xl lg:text-4xl font-bold
-				bg-gradient-to-r from-primary-500 via-neon-purple to-neon-pink
-				bg-clip-text text-transparent
-				mb-4
-			"
-		>
-			{$t('welcome.title')}
-		</h1>
-		<p
-			class="
-				text-base sm:text-lg
-				text-gray-600 dark:text-gray-300
-				max-w-2xl mx-auto
-			"
-		>
-			{$t('welcome.description')}
-		</p>
-	</header>
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1
+      in:slide={{ axis: 'y', duration: 300, delay: 100 }}
+      class="text-2xl md:text-3xl font-bold mb-3
+        bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600
+        dark:from-blue-400 dark:via-purple-400 dark:to-pink-400
+        bg-clip-text text-transparent"
+    >
+      {$t('welcome.title')}
+    </h1>
+    <p
+      in:fade={{ duration: 300, delay: 200 }}
+      class="text-base md:text-lg text-gray-600 dark:text-gray-300"
+    >
+      {$t('welcome.description')}
+    </p>
+  </div>
 
-	<!-- Goals Grid -->
-	<section class="mb-8">
-		<div
-			class="
-				grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4
-			"
-		>
-			{#each goals as goal}
-				<div
-					class="
-						p-4 sm:p-5 rounded-2xl
-						bg-gradient-to-br from-white/70 to-white/40
-						dark:from-gray-800/70 dark:to-gray-800/40
-						backdrop-blur-md
-						border border-white/30 dark:border-gray-700/30
-						hover:scale-105 hover:shadow-lg
-						transition-all duration-300
-						flex flex-col items-center text-center
-						min-h-touch
-					"
-				>
-					<span class="text-3xl sm:text-4xl mb-3">{goal.icon}</span>
-					<p class="text-sm sm:text-base font-medium text-gray-700 dark:text-gray-200">
-						{$t(goal.key)}
-					</p>
-				</div>
-			{/each}
-		</div>
-	</section>
+  <!-- Goals Section -->
+  <div
+    in:slide={{ axis: 'y', duration: 300, delay: 300 }}
+    class="mb-8"
+  >
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
+      {$t('welcome.goals.title')}
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {#each goals as goal, index}
+        <div
+          in:fade={{ duration: 200, delay: 400 + (index * 50) }}
+          class="flex items-center gap-3 p-3 rounded-xl
+            bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm
+            border border-gray-200/30 dark:border-gray-600/30
+            hover:bg-white/70 dark:hover:bg-gray-600/50
+            transition-all duration-300 ease-out
+            hover:shadow-md hover:scale-[1.02]"
+        >
+          <span class="text-xl flex-shrink-0">{goal.icon}</span>
+          <span class="text-sm text-gray-700 dark:text-gray-200">{$t(goal.key)}</span>
+        </div>
+      {/each}
+    </div>
+  </div>
 
-	<!-- Controls -->
-	<footer
-		class="
-			flex flex-wrap justify-center gap-3 sm:gap-4
-			pt-6 border-t border-gray-200/50 dark:border-gray-700/50
-		"
-	>
-		<ThemeToggle />
-		<LanguageToggle />
-	</footer>
+  <!-- Controls -->
+  <div
+    in:fade={{ duration: 300, delay: 600 }}
+    class="flex flex-wrap justify-center gap-3 pt-4 border-t border-gray-200/50 dark:border-gray-700/50"
+  >
+    <slot name="controls" />
+  </div>
 </div>
